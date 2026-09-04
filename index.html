@@ -319,7 +319,7 @@
     // 링크가 확정되면 아래 두 값만 입력하면 됩니다.
     const LINKS = {
       youthgrant: "https://youthgrant.seoeum1711.workers.dev",
-      attendance: ""
+      attendance: "/attendance-helper/"
     };
 
     const cards = [...document.querySelectorAll(".service-card")];
@@ -361,7 +361,7 @@
 
     const buttons = document.querySelectorAll(".pending");
     buttons[0].addEventListener("click", () => openLink(LINKS.youthgrant, "YouthGrant"));
-    buttons[1].addEventListener("click", () => openLink(LINKS.attendance, "출석부 도와줘"));
+    buttons[1].addEventListener("click", () => { window.location.href = LINKS.attendance; });
   </script>
 </body>
 </html>
