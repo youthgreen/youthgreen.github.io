@@ -102,7 +102,8 @@
   .btn-primary:hover{background:var(--leaf);transform:translateY(-2px);}
   .btn[aria-disabled="true"]{opacity:.58;cursor:not-allowed;transform:none;}
   .btn-ghost{background:transparent;color:var(--forest);border:1.5px solid var(--forest);}
-  .hero-note{font-size:12.5px;color:var(--ink-soft);margin-top:10px;}\n  .download-stat strong{color:var(--leaf);font-weight:800;}
+  .hero-note{font-size:12.5px;color:var(--ink-soft);margin-top:10px;}
+  .download-stat strong{color:var(--leaf);font-weight:800;}
 
   /* ---------- PAIN POINT ---------- */
   .pain{
@@ -312,7 +313,10 @@
         <a class="btn btn-primary download-link" href="#" aria-disabled="true">다운로드</a>
         <button type="button" class="btn btn-ghost js-scroll-steps">사용법 먼저 보기</button>
       </div>
-      <p class="hero-note">최신 버전 <span class="js-version"></span> · <span class="js-date"></span> 업데이트<span class="download-stat" hidden> · 누적 다운로드 <strong class="js-download-count">0</strong>회</span></p>
+      <p class="hero-note">
+        최신 버전 <span class="js-version"></span> · <span class="js-date"></span> 업데이트
+        <span class="download-stat js-download-stat" hidden> · 누적 다운로드 <strong class="js-download-count"></strong>회</span>
+      </p>
     </div>
   </header>
 
@@ -544,33 +548,32 @@
     const RELEASE = {
       version: "v1.2",           // 현재 버전
       date: "2026.09.04",        // 최종 배포일 (YYYY.MM.DD)
-      downloadUrl: "https://github.com/youthgreen/youthgreen.github.io/releases/download/v1.2/Attendance-Helper-V1.2-Offline.zip"            // GitHub Release 또는 공개 클라우드 직접 다운로드 URL
+      downloadUrl: "https://github.com/youthgreen/youthgreen.github.io/releases/download/v1.2/Attendance-Helper-V1.2-Offline.zip"
     };
     /* ============================================================ */
 
     document.querySelectorAll('.js-version').forEach(function(el){ el.textContent = RELEASE.version; });
     document.querySelectorAll('.js-date').forEach(function(el){ el.textContent = RELEASE.date; });
-
-    async function loadDownloadCount(){
-      try{
-        var endpoint = 'https://api.github.com/repos/youthgreen/youthgreen.github.io/releases/tags/' + encodeURIComponent(RELEASE.version);
-        var response = await fetch(endpoint, { headers: { 'Accept': 'application/vnd.github+json' } });
-        if(!response.ok){ return; }
-        var release = await response.json();
-        var asset = release.assets.find(function(item){
-          return item.browser_download_url === RELEASE.downloadUrl;
+    fetch('https://api.github.com/repos/youthgreen/youthgreen.github.io/releases/latest', {
+      headers: { 'Accept': 'application/vnd.github+json' }
+    })
+      .then(function(response){
+        if(!response.ok){ throw new Error('GitHub API request failed'); }
+        return response.json();
+      })
+      .then(function(release){
+        var asset = (release.assets || []).find(function(item){
+          return item.name === 'Attendance-Helper-V1.2-Offline.zip';
         });
         if(!asset || typeof asset.download_count !== 'number'){ return; }
         document.querySelectorAll('.js-download-count').forEach(function(el){
           el.textContent = asset.download_count.toLocaleString('ko-KR');
         });
-        document.querySelectorAll('.download-stat').forEach(function(el){ el.hidden = false; });
-      }catch(error){
-        /* 집계 API가 일시적으로 응답하지 않으면 다운로드 기능만 유지합니다. */
-      }
-    }
-
-    loadDownloadCount();
+        document.querySelectorAll('.js-download-stat').forEach(function(el){ el.hidden = false; });
+      })
+      .catch(function(){
+        // 집계 정보를 불러오지 못해도 다운로드 기능은 그대로 유지합니다.
+      });
     var downloadToast = document.querySelector('.download-toast');
     var downloadTimer;
     document.querySelectorAll('.download-link').forEach(function(el){
