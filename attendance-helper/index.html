@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>출석부 도와줘! — 명단 하나로 끝내는 행사 준비</title>
+<meta name="theme-color" content="#0b6b43">
+<meta name="description" content="출석부 도와줘! — 명단 하나로 출석부·식비명단·명찰을 한 번에 준비하는 Windows 데스크톱 앱">
+<style>
+  :root{
+    --forest:#10231b;
+    --leaf:#0b6b43;
+    --leaf-bright:#66ad49;
+    --sage:#f6f7f1;
+    --paper:rgba(255,255,255,.76);
+    --ink:#10231b;
+    --ink-soft:#596960;
+    --line:rgba(16,35,27,.10);
+    --amber:#C98A2E;
+    --amber-soft:#F3E1BE;
+    --radius-doc:6px;
+    --radius-card:18px;
+    --serif:Pretendard,'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    --sans:Pretendard,'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--sage);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    letter-spacing:-.02em;
+  }
+  body::before,body::after{
+    content:"";position:fixed;z-index:-2;border-radius:50%;pointer-events:none;
+    filter:blur(18px);opacity:.5;
+  }
+  body::before{width:46vw;height:46vw;min-width:440px;min-height:440px;right:-17vw;top:-15vw;background:radial-gradient(circle at 40% 40%,rgba(110,182,73,.24),rgba(110,182,73,0) 70%);}
+  body::after{width:38vw;height:38vw;min-width:360px;min-height:360px;left:-15vw;bottom:-15vw;background:radial-gradient(circle at 55% 45%,rgba(11,107,67,.14),rgba(11,107,67,0) 72%);}
+  .grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.22;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");}
+  img,svg{display:block;max-width:100%;}
+  .wrap{width:min(760px,calc(100% - 40px));margin:0 auto;padding:0;}
+  section{padding:64px 0;}
+  h1,h2,h3{font-family:var(--serif);font-weight:700;color:var(--forest);margin:0;letter-spacing:-0.01em;}
+  p{margin:0;}
+  a{color:inherit;}
+
+  /* ---------- NAV ---------- */
+  .nav{height:82px;width:min(1080px,calc(100% - 40px));margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+  .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;font-weight:850;letter-spacing:.06em;}
+  .nav-mark{
+    width:42px;height:42px;border-radius:50%;
+    background:var(--forest);display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .nav-name{font-size:15px;font-weight:850;color:var(--forest);letter-spacing:.06em;}
+  .nav-home{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.58);text-decoration:none;font-size:13px;font-weight:750;color:var(--forest);transition:.22s ease;}
+  .nav-home:hover{background:#fff;border-color:rgba(11,107,67,.22);transform:translateX(-2px);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:62px 0 20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-lede{
+    font-size:14px;color:var(--leaf);font-weight:600;margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(38px,6.2vw,62px);line-height:1.16;letter-spacing:-.055em;font-weight:900;
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(transparent 62%, var(--amber-soft) 62%);
+  }
+  .hero-sub{
+    margin-top:22px;font-size:18px;color:var(--ink-soft);max-width:42ch;
+  }
+  .hero-badges{
+    display:flex;flex-wrap:wrap;gap:8px;margin-top:26px;
+  }
+  .badge{
+    font-size:12.5px;font-weight:600;color:var(--forest);
+    background:#fff;border:1px solid var(--line);
+    padding:6px 12px;border-radius:100px;
+  }
+  .hero-illustration{margin:40px -4px 0;}
+  .hero-cta{
+    display:flex;gap:10px;margin-top:32px;flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:14px 22px;border-radius:14px;font-size:15px;font-weight:800;
+    text-decoration:none;cursor:pointer;border:none;
+    font-family:inherit;appearance:none;-webkit-appearance:none;
+  }
+  .btn-primary{background:var(--forest);color:#fff;transition:.22s ease;}
+  .btn-primary:hover{background:var(--leaf);transform:translateY(-2px);}
+  .btn[aria-disabled="true"]{opacity:.58;cursor:not-allowed;transform:none;}
+  .btn-ghost{background:transparent;color:var(--forest);border:1.5px solid var(--forest);}
+  .hero-note{font-size:12.5px;color:var(--ink-soft);margin-top:10px;}
+
+  /* ---------- PAIN POINT ---------- */
+  .pain{
+    background:var(--forest);color:#fff;border-radius:28px;box-shadow:0 24px 80px rgba(17,62,43,.11);
+  }
+  .pain > .wrap{width:100%;padding:52px 24px;}
+  .pain h2{color:#fff;font-size:24px;line-height:1.5;max-width:22ch;}
+  .pain-list{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:14px;}
+  .pain-list li{
+    display:flex;gap:12px;font-size:15px;color:#D9E4D3;
+  }
+  .pain-list li::before{content:"✕";color:#8FA88C;font-weight:700;flex-shrink:0;}
+  .pain-turn{
+    margin-top:30px;padding-top:26px;border-top:1px solid rgba(255,255,255,0.15);
+    font-size:16.5px;font-weight:600;color:var(--leaf-bright);
+  }
+
+  /* ---------- SECTION HEADER ---------- */
+  .sec-head{margin-bottom:34px;}
+  .sec-kicker{font-size:13px;color:var(--leaf);font-weight:700;margin-bottom:8px;}
+  .sec-head h2{font-size:25px;line-height:1.4;}
+  .sec-head p{margin-top:10px;color:var(--ink-soft);font-size:15px;}
+
+  /* ---------- STEPS ---------- */
+  .steps{display:grid;gap:0;}
+  .step{
+    display:flex;gap:18px;padding:22px 0;
+    border-top:1px solid var(--line);
+  }
+  .step:last-child{border-bottom:1px solid var(--line);}
+  .step-num{
+    font-family:var(--serif);font-size:22px;font-weight:700;color:var(--leaf);
+    width:38px;flex-shrink:0;
+  }
+  .step-body h3{font-family:var(--sans);font-size:16.5px;font-weight:700;color:var(--forest);}
+  .step-body p{font-size:14.5px;color:var(--ink-soft);margin-top:6px;}
+
+  /* ---------- FEATURES (bento) ---------- */
+  .bento{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .bento .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-card);backdrop-filter:blur(18px);
+    padding:22px;
+  }
+  .bento .card.wide{grid-column:1 / -1;background:var(--forest);border-color:var(--forest);}
+  .bento .card.wide h3, .bento .card.wide p{color:#fff;}
+  .bento .card.wide p{color:#C7D6C1;}
+  .f-icon{
+    width:38px;height:38px;border-radius:10px;background:var(--sage);
+    display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+  }
+  .bento .card.wide .f-icon{background:rgba(255,255,255,0.12);}
+  .bento h3{font-family:var(--sans);font-size:15.5px;font-weight:700;color:var(--forest);}
+  .bento p{font-size:13.5px;color:var(--ink-soft);margin-top:6px;line-height:1.55;}
+
+  /* ---------- OUTPUTS ---------- */
+  .outputs{display:grid;gap:12px;}
+  .output{
+    display:flex;align-items:center;gap:16px;
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+  }
+  .doc-chip{
+    width:44px;height:52px;border-radius:var(--radius-doc);
+    background:#fff;border:1.5px solid var(--leaf);position:relative;flex-shrink:0;
+  }
+  .doc-chip::before{
+    content:"";position:absolute;left:8px;right:8px;top:12px;height:3px;background:var(--line);
+    box-shadow:0 8px 0 var(--line), 0 16px 0 var(--line), 0 24px 0 var(--line);
+  }
+  .output-name{font-size:15px;font-weight:700;color:var(--forest);}
+  .output-fmt{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+
+  /* ---------- PERSONA ---------- */
+  .persona-list{display:grid;gap:10px;}
+  .persona{
+    display:flex;gap:14px;align-items:flex-start;
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;
+  }
+  .persona-check{
+    width:22px;height:22px;border-radius:50%;background:var(--leaf);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;margin-top:2px;
+  }
+  .persona p{font-size:15px;color:var(--ink);font-weight:500;}
+
+  /* ---------- FAQ ---------- */
+  details{
+    border-top:1px solid var(--line);padding:18px 0;
+  }
+  details:last-child{border-bottom:1px solid var(--line);}
+  summary{
+    cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;
+    font-size:15.5px;font-weight:600;color:var(--forest);
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary::after{
+    content:"+";font-size:20px;color:var(--leaf);flex-shrink:0;font-weight:400;
+    transition:transform .2s ease;
+  }
+  details[open] summary::after{transform:rotate(45deg);}
+  details p{margin-top:12px;font-size:14.5px;color:var(--ink-soft);padding-right:28px;}
+
+  /* ---------- FOOTER CTA ---------- */
+  .cta-final{
+    background:linear-gradient(135deg,#f3e1be,#edf4e8);border:1px solid var(--line);border-radius:28px;text-align:center;
+  }
+  .cta-final > .wrap{width:100%;padding:52px 24px;}
+  .cta-final h2{font-size:23px;}
+  .cta-final p{margin-top:12px;color:var(--ink-soft);font-size:15px;}
+  .cta-final .hero-cta{justify-content:center;margin-top:26px;}
+
+  .site-footer{width:100%;border-top:1px solid var(--line);padding:28px 0 34px;color:#748078;font-size:12px;}
+  .footer-inner{width:min(1080px,calc(100% - 40px));margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  .footer-copy{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .footer-copy a{color:var(--leaf);font-weight:700;text-decoration:none;}
+  .footer-copy a:hover{text-decoration:underline;}
+  .footer-dot{opacity:.6;}
+  .copyright{white-space:nowrap;color:#748078;}
+  .download-toast{position:fixed;left:50%;bottom:28px;z-index:30;pointer-events:none;transform:translate(-50%,18px);opacity:0;padding:13px 18px;border-radius:14px;background:#10231b;color:#fff;font-size:13px;box-shadow:0 16px 50px rgba(0,0,0,.18);transition:.3s ease;}
+  .download-toast.show{opacity:1;transform:translate(-50%,0);}
+
+  @media (max-width:480px){
+    .wrap{width:min(100% - 28px,760px);}
+    .nav{height:70px;width:min(100% - 28px,1080px);}
+    .nav-mark{width:38px;height:38px;}
+    .nav-home{padding:9px 11px;}
+    .hero{padding-top:42px;}
+    .hero h1{font-size:30px;}
+    .bento{grid-template-columns:1fr;}
+    .footer-inner{width:min(100% - 28px,1080px);align-items:flex-start;flex-direction:column;gap:8px;}
+    .copyright{white-space:normal;}
+  }
+</style>
+</head>
+<body>
+  <div class="grain"></div>
+
+  <nav class="nav">
+    <a class="nav-brand" href="/" aria-label="UGREEN LAB 홈">
+      <span class="nav-mark" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C8 6 6 10 6 14C6 18.4 8.7 22 12 22C15.3 22 18 18.4 18 14C18 10 16 6 12 2Z" fill="#EFF4E9"/>
+          <path d="M12 6V20" stroke="#66ad49" stroke-width="1.4"/>
+        </svg>
+      </span>
+      <span class="nav-name">UGREEN LAB</span>
+    </a>
+    <a class="nav-home" href="/"><span aria-hidden="true">←</span> 홈으로</a>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-lede">청소년기관 · 행사 운영 담당자를 위한 데스크톱 앱</div>
+      <h1>명단 하나면,<br>서류 세 개는 <em>끝난 겁니다.</em></h1>
+      <p class="hero-sub">출석부, 식비명단, 명찰. 매번 따로 만들던 세 가지 서류를 명단 파일 하나로 한 번에 완성하세요.</p>
+
+      <div class="hero-illustration">
+        <svg viewBox="0 0 680 260" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- source folder -->
+          <g transform="translate(40,90)">
+            <rect x="0" y="20" width="86" height="66" rx="8" fill="#FBF8F0" stroke="#3E7C4A" stroke-width="2"/>
+            <rect x="0" y="8" width="46" height="16" rx="6" fill="#3E7C4A"/>
+            <text x="43" y="60" text-anchor="middle" font-family="Noto Sans KR" font-size="12" font-weight="700" fill="#1D3626">명단</text>
+            <text x="43" y="74" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#4B554D">XLSX·CSV·HWPX</text>
+          </g>
+          <!-- arrow -->
+          <path d="M150 130 C 190 130, 190 130, 225 130" stroke="#C98A2E" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#C98A2E"/>
+            </marker>
+          </defs>
+          <!-- three fanned documents -->
+          <g transform="translate(260,60) rotate(-8)">
+            <rect width="120" height="150" rx="8" fill="#FFFFFF" stroke="#D8E2D2" stroke-width="2"/>
+            <rect x="16" y="20" width="88" height="8" rx="2" fill="#5A9E63"/>
+            <rect x="16" y="42" width="70" height="6" rx="2" fill="#D8E2D2"/>
+            <rect x="16" y="56" width="70" height="6" rx="2" fill="#D8E2D2"/>
+            <rect x="16" y="70" width="70" height="6" rx="2" fill="#D8E2D2"/>
+            <text x="16" y="120" font-family="Noto Sans KR" font-size="11" font-weight="700" fill="#1D3626">출석부</text>
+          </g>
+          <g transform="translate(330,50)">
+            <rect width="120" height="150" rx="8" fill="#FFFFFF" stroke="#3E7C4A" stroke-width="2.5"/>
+            <rect x="16" y="20" width="88" height="8" rx="2" fill="#C98A2E"/>
+            <rect x="16" y="42" width="70" height="6" rx="2" fill="#D8E2D2"/>
+            <rect x="16" y="56" width="70" height="6" rx="2" fill="#D8E2D2"/>
+            <rect x="16" y="70" width="70" height="6" rx="2" fill="#D8E2D2"/>
+            <rect x="16" y="110" width="88" height="26" rx="4" fill="#EFF4E9"/>
+            <text x="16" y="127" font-family="Noto Sans KR" font-size="9" fill="#3E7C4A">확인 · 서명</text>
+            <text x="16" y="20" font-family="Noto Sans KR" font-size="11" font-weight="700" fill="#1D3626">식비명단</text>
+          </g>
+          <g transform="translate(400,60) rotate(9)">
+            <rect width="100" height="150" rx="8" fill="#FFFFFF" stroke="#D8E2D2" stroke-width="2"/>
+            <circle cx="50" cy="34" r="16" fill="#EFF4E9" stroke="#5A9E63" stroke-width="1.5"/>
+            <rect x="24" y="60" width="52" height="6" rx="2" fill="#1D3626"/>
+            <rect x="30" y="74" width="40" height="5" rx="2" fill="#D8E2D2"/>
+            <text x="50" y="120" text-anchor="middle" font-family="Noto Sans KR" font-size="10" font-weight="700" fill="#1D3626">명찰</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="hero-badges">
+        <span class="badge">Windows 10 / 11</span>
+        <span class="badge">인터넷 없이 핵심 기능 사용</span>
+        <span class="badge">로컬 처리로 안전</span>
+      </div>
+
+      <div class="hero-cta">
+        <a class="btn btn-primary download-link" href="#" aria-disabled="true">다운로드</a>
+        <button type="button" class="btn btn-ghost js-scroll-steps">사용법 먼저 보기</button>
+      </div>
+      <p class="hero-note">최신 버전 <span class="js-version"></span> · <span class="js-date"></span> 업데이트</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap pain">
+      <div class="wrap">
+        <h2>행사 하루 전, 아직도 이러고 계신가요?</h2>
+        <ul class="pain-list">
+          <li>명단 보면서 출석부 칸을 손으로 정리하고</li>
+          <li>식비명단은 또 새 문서를 열어서 옮겨 적고</li>
+          <li>명찰은 이름 하나하나 복사·붙여넣기</li>
+        </ul>
+        <p class="pain-turn">"출석부 도와줘!"는 그 명단 파일 하나로 세 가지를 동시에 끝냅니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="steps">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-kicker">사용 방법</div>
+        <h2>처음 쓰는 분도, 5단계면 충분합니다</h2>
+        <p>순서대로 따라오시면 결과물까지 그대로 이어집니다.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h3>명단 파일 불러오기</h3>
+            <p>XLSX · CSV · HWPX 형식의 명단 파일을 선택합니다.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h3>만들 문서 선택</h3>
+            <p>출석부, 식비명단, 명찰 중 필요한 항목을 체크합니다.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h3>기본 정보 입력</h3>
+            <p>프로그램명, 날짜, 확인자 등 공통 정보를 입력합니다.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h3>명찰 디자인 조정</h3>
+            <p>배경, 로고, 글꼴, 위치를 조정하고 미리보기로 확인합니다.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">05</div>
+          <div class="step-body">
+            <h3>결과물 생성</h3>
+            <p>PDF 또는 XLSX 파일로 저장해 바로 출력합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-kicker">주요 기능</div>
+        <h2>반복되는 행사 준비, 한 번에 줄이는 기능들</h2>
+      </div>
+      <div class="bento">
+        <div class="card wide">
+          <div class="f-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6V12C4 17 7.5 21 12 22C16.5 21 20 17 20 12V6L12 2Z" stroke="white" stroke-width="1.6"/></svg>
+          </div>
+          <h3>로컬 처리로 안심</h3>
+          <p>참가자 개인정보를 외부로 전송하지 않고, PC 내부에서만 안전하게 처리합니다.</p>
+        </div>
+        <div class="card">
+          <div class="f-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12H20M4 6H20M4 18H14" stroke="#3E7C4A" stroke-width="1.8"/></svg>
+          </div>
+          <h3>명단 1개로 여러 서식</h3>
+          <p>한 번의 입력으로 출석부·식비명단·명찰을 동시에 준비합니다.</p>
+        </div>
+        <div class="card">
+          <div class="f-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#3E7C4A" stroke-width="1.8"/></svg>
+          </div>
+          <h3>출석부 자동 작성</h3>
+          <p>연번과 이름을 정리해 바로 출력 가능한 출석부를 만듭니다.</p>
+        </div>
+        <div class="card">
+          <div class="f-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#3E7C4A" stroke-width="1.8"/></svg>
+          </div>
+          <h3>식비명단 자동 작성</h3>
+          <p>확인자와 서명 칸까지 포함한 식비명단을 생성합니다.</p>
+        </div>
+        <div class="card">
+          <div class="f-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3" stroke="#3E7C4A" stroke-width="1.8"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#3E7C4A" stroke-width="1.8"/></svg>
+          </div>
+          <h3>명찰 디자인 편집</h3>
+          <p>가로형 90×60 / 세로형 93×124 명찰을 직접 편집합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-kicker">생성 결과물</div>
+        <h2>이렇게 완성됩니다</h2>
+      </div>
+      <div class="outputs">
+        <div class="output">
+          <div class="doc-chip"></div>
+          <div>
+            <div class="output-name">출석부</div>
+            <div class="output-fmt">XLSX</div>
+          </div>
+        </div>
+        <div class="output">
+          <div class="doc-chip"></div>
+          <div>
+            <div class="output-name">식비명단</div>
+            <div class="output-fmt">XLSX</div>
+          </div>
+        </div>
+        <div class="output">
+          <div class="doc-chip"></div>
+          <div>
+            <div class="output-name">명찰</div>
+            <div class="output-fmt">PDF</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-kicker">이런 분께 추천합니다</div>
+        <h2>이런 업무, 익숙하신가요</h2>
+      </div>
+      <div class="persona-list">
+        <div class="persona">
+          <div class="persona-check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5"/></svg>
+          </div>
+          <p>청소년기관 · 체험프로그램을 담당하고 있다</p>
+        </div>
+        <div class="persona">
+          <div class="persona-check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5"/></svg>
+          </div>
+          <p>행사마다 반복되는 서식 작업이 많다</p>
+        </div>
+        <div class="persona">
+          <div class="persona-check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5"/></svg>
+          </div>
+          <p>명찰 · 출석부 · 식비명단을 빠르게 준비하고 싶다</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-kicker">자주 묻는 질문</div>
+        <h2>궁금하신 점, 미리 답해드립니다</h2>
+      </div>
+      <div class="faq-list">
+        <details>
+          <summary>HWP 파일도 바로 되나요?</summary>
+          <p>일부 환경에서는 HWPX로 변환한 후 사용을 권장합니다.</p>
+        </details>
+        <details>
+          <summary>개인정보는 저장되나요?</summary>
+          <p>참가자 데이터는 외부로 전송되지 않고, PC 내부에서 처리하는 방향으로 설계되었습니다.</p>
+        </details>
+        <details>
+          <summary>어떤 결과물을 만들 수 있나요?</summary>
+          <p>출석부, 식비명단, 명찰을 생성할 수 있습니다.</p>
+        </details>
+        <details>
+          <summary>처음 써도 어렵지 않나요?</summary>
+          <p>단계별 입력과 미리보기 중심이라 처음 사용하시는 분도 쉽게 사용할 수 있습니다.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap cta-final">
+      <div class="wrap">
+        <h2>다음 행사부터는, 명단 하나로 끝내세요</h2>
+        <p>다른 유용한 프로그램이 필요하신가요?</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="mailto:youthgreen94@gmail.com">이메일로 문의/제안하기</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-copy">
+        <span>다양한 아이디어를 구현하는 실험서비스 제공</span>
+        <span class="footer-dot">·</span>
+        <span>문의</span>
+        <a href="mailto:youthgreen94@gmail.com">youthgreen94@gmail.com</a>
+      </div>
+      <span class="copyright">© 2026 UGREEN LAB</span>
+    </div>
+  </footer>
+  <div class="download-toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /* ============================================================
+       새 버전이 나올 때마다 아래 3줄만 바꿔주세요.
+       (디자인은 그대로 두고 이 값만 바꾸면 페이지 전체에 자동 반영됩니다)
+       ============================================================ */
+    const RELEASE = {
+      version: "v1.2",           // 현재 버전
+      date: "2026.09.04",        // 최종 배포일 (YYYY.MM.DD)
+      downloadUrl: ""            // GitHub Release 또는 공개 클라우드 직접 다운로드 URL
+    };
+    /* ============================================================ */
+
+    document.querySelectorAll('.js-version').forEach(function(el){ el.textContent = RELEASE.version; });
+    document.querySelectorAll('.js-date').forEach(function(el){ el.textContent = RELEASE.date; });
+    var downloadToast = document.querySelector('.download-toast');
+    var downloadTimer;
+    document.querySelectorAll('.download-link').forEach(function(el){
+      if(RELEASE.downloadUrl){
+        el.href = RELEASE.downloadUrl;
+        el.removeAttribute('aria-disabled');
+      }else{
+        el.addEventListener('click', function(event){
+          event.preventDefault();
+          clearTimeout(downloadTimer);
+          downloadToast.textContent = '다운로드 파일을 안전한 배포 저장소에 연결 중입니다.';
+          downloadToast.classList.add('show');
+          downloadTimer = setTimeout(function(){ downloadToast.classList.remove('show'); }, 2400);
+        });
+      }
+    });
+
+    document.querySelectorAll('.js-scroll-steps').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var target = document.getElementById('steps');
+        if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+  </script>
+
+</body>
+</html>
