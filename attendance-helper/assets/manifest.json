@@ -1,0 +1,98 @@
+[
+  {
+    "file": "01-import.webp",
+    "width": 1440,
+    "height": 1640,
+    "bytes": 54338,
+    "source": "Actual app screenshot; 10-badge-pdf is the production PDF rendered with Poppler"
+  },
+  {
+    "file": "02-column-review.webp",
+    "width": 1440,
+    "height": 1640,
+    "bytes": 39030,
+    "source": "Actual app screenshot; 10-badge-pdf is the production PDF rendered with Poppler"
+  },
+  {
+    "file": "03-participants.webp",
+    "width": 1440,
+    "height": 1640,
+    "bytes": 57550,
+    "source": "Actual app screenshot; 10-badge-pdf is the production PDF rendered with Poppler"
+  },
+  {
+    "file": "04-documents.webp",
+    "width": 1440,
+    "height": 1640,
+    "bytes": 43296,
+    "source": "Actual app screenshot; 10-badge-pdf is the production PDF rendered with Poppler"
+  },
+  {
+    "file": "05-event.webp",
+    "width": 1440,
+    "height": 1640,
+    "bytes": 51006,
+    "source": "Actual app screenshot; 10-badge-pdf is the production PDF rendered with Poppler"
+  },
+  {
+    "file": "06-badge-editor.webp",
+    "width": 1600,
+    "height": 1131,
+    "bytes": 47240,
+    "source": "Actual app screenshot; 10-badge-pdf is the production PDF rendered with Poppler"
+  },
+  {
+    "file": "07-save-review.webp",
+    "width": 1440,
+    "height": 1640,
+    "bytes": 52646,
+    "source": "Actual app screenshot; 10-badge-pdf is the production PDF rendered with Poppler"
+  },
+  {
+    "file": "08-attendance-preview.webp",
+    "width": 1440,
+    "height": 1640,
+    "bytes": 31008,
+    "source": "Actual app screenshot; 10-badge-pdf is the production PDF rendered with Poppler"
+  },
+  {
+    "file": "09-meal-preview.webp",
+    "width": 1440,
+    "height": 1640,
+    "bytes": 32674,
+    "source": "Actual app screenshot; 10-badge-pdf is the production PDF rendered with Poppler"
+  },
+  {
+    "file": "10-badge-pdf.webp",
+    "width": 1273,
+    "height": 1800,
+    "bytes": 35856,
+    "source": "Actual app screenshot; 10-badge-pdf is the production PDF rendered with Poppler"
+  },
+  {
+    "file": "attendance-detail.webp",
+    "width": 1000,
+    "height": 556,
+    "bytes": 14702,
+    "crop": {
+      "left": 106,
+      "top": 410,
+      "width": 1240,
+      "height": 690
+    },
+    "source": "08-attendance-preview.png"
+  },
+  {
+    "file": "meal-detail.webp",
+    "width": 1000,
+    "height": 613,
+    "bytes": 16122,
+    "crop": {
+      "left": 106,
+      "top": 410,
+      "width": 1240,
+      "height": 760
+    },
+    "source": "09-meal-preview.png"
+  }
+]
