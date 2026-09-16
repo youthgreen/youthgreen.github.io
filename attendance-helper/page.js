@@ -14,7 +14,9 @@ function selectTab(tab, options = {}) {
     if (selected && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(() => panel.classList.add('panel-enter'));
   }
   progressText.innerHTML = `<strong>${selectedIndex + 1}</strong> / ${tabs.length} 단계`;
-  progressBar.style.width = `${((selectedIndex + 1) / tabs.length) * 100}%`;
+  progressBar.style.transform = `scaleX(${(selectedIndex + 1) / tabs.length})`;
+  document.querySelector('[data-step=previous]').disabled = selectedIndex === 0;
+  document.querySelector('[data-step=next]').disabled = selectedIndex === tabs.length - 1;
   if (options.focus) tab.focus();
 }
 tabs.forEach((tab, index) => {
@@ -31,7 +33,7 @@ tabs.forEach((tab, index) => {
 document.querySelectorAll('[data-step]').forEach(button => button.addEventListener('click', () => {
   const current = tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true');
   const direction = button.dataset.step === 'next' ? 1 : -1;
-  selectTab(tabs[(current + direction + tabs.length) % tabs.length], { focus: true });
+  selectTab(tabs[Math.max(0, Math.min(tabs.length - 1, current + direction))]);
 }));
 const dialog = document.getElementById('image-viewer');
 const viewerImage = document.getElementById('viewer-image');
@@ -51,3 +53,6 @@ document.querySelectorAll('[data-lightbox]').forEach(link => {
 document.getElementById('viewer-close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } });
 dialog.addEventListener('close', () => { document.body.classList.remove('viewer-open'); opener?.focus({ preventScroll: true }); });
+
+document.querySelector('.step-controls').hidden = false;
+selectTab(tabs.find(tab => tab.getAttribute('aria-selected') === 'true') || tabs[0]);
