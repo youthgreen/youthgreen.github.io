@@ -23,22 +23,23 @@
       <a class="brand" href="/" aria-label="UGREEN LAB 홈"><span class="brand-mark" aria-hidden="true"><svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 6 6 10 6 14C6 18.4 8.7 22 12 22C15.3 22 18 18.4 18 14C18 10 16 6 12 2Z" fill="#eff4e9"/><path d="M12 6V20" stroke="#a7cc8a" stroke-width="1.4"/></svg></span>UGREEN <span class="brand-light">LAB</span></a>
       <div class="nav-links"><a href="#how-it-works">사용 흐름</a><a href="#outputs">결과물</a><a class="nav-download" href="#download">Windows 다운로드</a></div>
     </nav>
+    <nav class="section-nav" aria-label="페이지 둘러보기"><a href="#how-it-works">둘러보기</a><a href="#outputs">결과물</a><a href="#download">다운로드</a></nav>
   </header>
   <main id="main">
     <section class="hero wrap" aria-labelledby="hero-title">
       <div class="hero-copy">
+        <p class="hero-kicker">WINDOWS 로컬 업무도구</p>
         <h1 id="hero-title"><span>명단 하나에</span><br>출석부, 식비명단,<br>명찰까지.</h1>
-        <p class="hero-description">출석부, 식비명단, 명찰. 매번 따로 만들던 세 가지 서류를<br>명단 파일 하나로 한 번에 완성하세요.</p>
+        <p class="hero-description">명단 파일 하나를 불러와 출석부·식비명단 XLSX와 명찰 PDF를 만드세요. 파일 처리는 내 PC에서 이루어집니다.</p>
         <div class="hero-actions"><a class="button primary" href="#download">WINDOWS 앱 다운로드</a><p class="release-meta"><strong>최신 버전 v1.3.2</strong><span>업데이트 2026.09.13</span></p></div>
       </div>
+      <figure class="hero-demo"><div class="app-window"><div class="app-window-bar" aria-hidden="true"><i></i><i></i><i></i><span>출석부 도와줘</span></div><picture class="workflow-animation"><source media="(prefers-reduced-motion: reduce)" srcset="./assets/02-column-review.webp"><img class="workflow-gif" src="./assets/workflow.gif" width="640" height="430" fetchpriority="high" alt="명단 확인부터 문서 선택과 저장 전 확인까지 이어지는 실제 앱 동작"></picture></div><figcaption>실제 앱 동작 화면</figcaption></figure>
     </section>
     <div class="page-divider wrap" aria-hidden="true"></div>
-    <section class="demo-section wrap" id="demo" aria-label="실제 앱 동작 화면">
-      <picture class="workflow-animation"><source media="(prefers-reduced-motion: reduce)" srcset="./assets/02-column-review.webp"><img class="workflow-gif" src="./assets/workflow.gif" width="640" height="430" loading="lazy" fetchpriority="low" alt="가상 명단 확인부터 참가자와 문서 선택, 행사 정보 입력, 명찰 편집, 저장 전 확인까지 이어지는 실제 앱 화면"></picture>
-    </section>
-    <section class="value-section"><div class="wrap"><h2>반복 업무는 줄이고,<br>프로그램 준비에 집중하세요.</h2><div class="value-grid"><article><span class="value-icon" aria-hidden="true">01</span><h3>명단과 참가자 확인</h3></article><article><span class="value-icon" aria-hidden="true">02</span><h3>문서와 행사 정보 선택</h3></article><article><span class="value-icon" aria-hidden="true">03</span><h3>명찰 편집 후 저장 전 확인</h3></article></div></div></section>
+    <section class="value-section"><div class="wrap"><h2>반복 업무는 줄이고,<br>프로그램 준비에 집중하세요.</h2><div class="value-grid result-flow"><article><span class="value-icon" aria-hidden="true">INPUT</span><h3>명단 하나</h3><small>이름·소속 열 확인</small></article><span class="flow-arrow" aria-hidden="true">→</span><article><span class="value-icon" aria-hidden="true">OUTPUT 01</span><h3>출석부 XLSX</h3></article><article><span class="value-icon" aria-hidden="true">OUTPUT 02</span><h3>식비명단 XLSX</h3></article><article><span class="value-icon" aria-hidden="true">OUTPUT 03</span><h3>명찰 PDF</h3></article></div></div></section>
     <section class="section wrap" id="how-it-works" aria-labelledby="steps-title">
       <div class="section-heading"><div><h2 id="steps-title">앱 미리보기</h2></div></div>
+      <div class="walkthrough-meta"><p id="step-progress" aria-live="polite"><strong>1</strong> / 6 단계</p><div class="progress-track" aria-hidden="true"><span></span></div></div>
       <div class="walkthrough">
         <div class="step-list" role="tablist" aria-label="앱 사용 단계" aria-orientation="vertical">
           <button id="tab-import" role="tab" aria-selected="true" aria-controls="panel-import"><span>01</span><span><strong>명단 불러오기</strong><small>파일을 선택하고 이름·소속 열 확인</small></span><b aria-hidden="true">↗</b></button>
@@ -57,6 +58,7 @@
           <figure id="panel-save" role="tabpanel" aria-labelledby="tab-save" tabindex="0" hidden><a href="./assets/07-save-review.webp" data-lightbox data-caption="저장 전 확인 · 실제 파일 생성은 Windows 앱에서 지원합니다."><img src="./assets/07-save-review.webp" width="1440" height="1640" loading="lazy" alt="참가자 6명과 결과 파일 3개를 확인하고 저장 위치를 선택하는 단계"></a><figcaption><span>06 / 06</span>참가자·행사·파일 개수를 확인한 뒤 저장 위치를 고릅니다.</figcaption></figure>
         </div>
       </div>
+      <div hidden class="step-controls" aria-label="미리보기 단계 이동"><button type="button" data-step="previous">← 이전 단계</button><button type="button" data-step="next">다음 단계 →</button></div>
       <p class="section-note">가상의 한국 이름 6명 · 유그린청소년센터 · 2026 청소년 문화체험. 실제 개인정보를 사용하지 않았습니다.</p>
       <noscript><p>JavaScript 없이도 다음 실제 화면을 열 수 있습니다: <a href="./assets/03-participants.webp">참가자 선택</a> · <a href="./assets/04-documents.webp">문서 선택</a> · <a href="./assets/05-event.webp">행사 정보</a> · <a href="./assets/06-badge-editor.webp">명찰 편집</a> · <a href="./assets/07-save-review.webp">저장 전 확인</a></p></noscript>
     </section>

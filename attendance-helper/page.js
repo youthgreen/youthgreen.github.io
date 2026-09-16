@@ -1,12 +1,23 @@
 // No third-party requests, libraries, analytics, or participant inputs on this page.
 const tabs = [...document.querySelectorAll('[role="tab"]')];
-function selectTab(tab) {
+const progressText = document.getElementById('step-progress');
+const progressBar = document.querySelector('.progress-track span');
+function selectTab(tab, options = {}) {
+  const selectedIndex = tabs.indexOf(tab);
   for (const item of tabs) {
     const selected = item === tab;
     item.setAttribute('aria-selected', String(selected));
     item.tabIndex = selected ? 0 : -1;
-    document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
+    const panel = document.getElementById(item.getAttribute('aria-controls'));
+    panel.hidden = !selected;
+    panel.classList.remove('panel-enter');
+    if (selected && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(() => panel.classList.add('panel-enter'));
   }
+  progressText.innerHTML = `<strong>${selectedIndex + 1}</strong> / ${tabs.length} 단계`;
+  progressBar.style.transform = `scaleX(${(selectedIndex + 1) / tabs.length})`;
+  document.querySelector('[data-step=previous]').disabled = selectedIndex === 0;
+  document.querySelector('[data-step=next]').disabled = selectedIndex === tabs.length - 1;
+  if (options.focus) tab.focus();
 }
 tabs.forEach((tab, index) => {
   tab.addEventListener('click', () => selectTab(tab));
@@ -16,9 +27,14 @@ tabs.forEach((tab, index) => {
     if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
     if (event.key === 'Home') next = 0;
     if (event.key === 'End') next = tabs.length - 1;
-    if (next !== undefined) { event.preventDefault(); selectTab(tabs[next]); tabs[next].focus(); }
+    if (next !== undefined) { event.preventDefault(); selectTab(tabs[next], { focus: true }); }
   });
 });
+document.querySelectorAll('[data-step]').forEach(button => button.addEventListener('click', () => {
+  const current = tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true');
+  const direction = button.dataset.step === 'next' ? 1 : -1;
+  selectTab(tabs[Math.max(0, Math.min(tabs.length - 1, current + direction))]);
+}));
 const dialog = document.getElementById('image-viewer');
 const viewerImage = document.getElementById('viewer-image');
 const caption = document.getElementById('viewer-caption');
@@ -37,3 +53,6 @@ document.querySelectorAll('[data-lightbox]').forEach(link => {
 document.getElementById('viewer-close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } });
 dialog.addEventListener('close', () => { document.body.classList.remove('viewer-open'); opener?.focus({ preventScroll: true }); });
+
+document.querySelector('.step-controls').hidden = false;
+selectTab(tabs.find(tab => tab.getAttribute('aria-selected') === 'true') || tabs[0]);
