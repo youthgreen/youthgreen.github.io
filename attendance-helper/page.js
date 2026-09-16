@@ -1,12 +1,21 @@
 // No third-party requests, libraries, analytics, or participant inputs on this page.
 const tabs = [...document.querySelectorAll('[role="tab"]')];
-function selectTab(tab) {
+const progressText = document.getElementById('step-progress');
+const progressBar = document.querySelector('.progress-track span');
+function selectTab(tab, options = {}) {
+  const selectedIndex = tabs.indexOf(tab);
   for (const item of tabs) {
     const selected = item === tab;
     item.setAttribute('aria-selected', String(selected));
     item.tabIndex = selected ? 0 : -1;
-    document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
+    const panel = document.getElementById(item.getAttribute('aria-controls'));
+    panel.hidden = !selected;
+    panel.classList.remove('panel-enter');
+    if (selected && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(() => panel.classList.add('panel-enter'));
   }
+  progressText.innerHTML = `<strong>${selectedIndex + 1}</strong> / ${tabs.length} 단계`;
+  progressBar.style.width = `${((selectedIndex + 1) / tabs.length) * 100}%`;
+  if (options.focus) tab.focus();
 }
 tabs.forEach((tab, index) => {
   tab.addEventListener('click', () => selectTab(tab));
@@ -16,9 +25,14 @@ tabs.forEach((tab, index) => {
     if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
     if (event.key === 'Home') next = 0;
     if (event.key === 'End') next = tabs.length - 1;
-    if (next !== undefined) { event.preventDefault(); selectTab(tabs[next]); tabs[next].focus(); }
+    if (next !== undefined) { event.preventDefault(); selectTab(tabs[next], { focus: true }); }
   });
 });
+document.querySelectorAll('[data-step]').forEach(button => button.addEventListener('click', () => {
+  const current = tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true');
+  const direction = button.dataset.step === 'next' ? 1 : -1;
+  selectTab(tabs[(current + direction + tabs.length) % tabs.length], { focus: true });
+}));
 const dialog = document.getElementById('image-viewer');
 const viewerImage = document.getElementById('viewer-image');
 const caption = document.getElementById('viewer-caption');
