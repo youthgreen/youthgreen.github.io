@@ -88,3 +88,74 @@
   <dialog id="image-viewer" aria-labelledby="viewer-caption"><div class="viewer-toolbar"><p id="viewer-caption"></p><button type="button" id="viewer-close" aria-label="확대 이미지 닫기">닫기 <span aria-hidden="true">×</span></button></div><img id="viewer-image" alt=""></dialog>
 </body>
 </html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>출석부 도와줘 | 명단 하나로 출석부, 식비명단, 명찰까지</title>
+  <meta name="description" content="명단을 불러오고, 참가자를 고르고, 필요한 문서를 만드세요. 실제 앱 화면으로 만나는 출석부 도와줘. 출석부·식비명단 XLSX와 명찰 PDF를 만드는 Windows 로컬 업무도구.">
+  <meta name="theme-color" content="#153e30">
+  <meta property="og:title" content="명단 하나로 출석부, 식비명단, 명찰까지">
+  <meta property="og:description" content="반복 업무는 줄이고, 프로그램 준비에 집중하세요. 유그린 LAB의 Windows 로컬 업무도구.">
+  <meta property="og:site_name" content="유그린 LAB">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://youthgreen.github.io/attendance-helper/">
+  <meta property="og:image" content="https://youthgreen.github.io/attendance-helper/assets/06-badge-editor.webp">
+  <link rel="canonical" href="https://youthgreen.github.io/attendance-helper/">
+  <link rel="icon" href="./assets/ugreen-lab-logo.webp" type="image/webp">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./page.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>a>
+  <header class="site-header">
+    <nav class="nav wrap" aria-label="주 메뉴">
+      <a class="brand" href="/" aria-label="유그린 LAB 홈"><span class="brand-mark" aria-hidden="true" style="background:transparent;box-shadow:none;overflow:hidden"><img src="./assets/ugreen-lab-logo.webp" width="35" height="35" alt="" style="width:100%;height:100%;object-fit:contain"></span>span>유그린 <span class="brand-light">LAB</span>span></a>a>
+      <div class="nav-links"><a href="#how-it-works">사용 흐름</a>a><a href="#outputs">결과물</a>a><a class="nav-download" href="#download">Windows 다운로드</a>a></div>div>
+    </nav>nav>
+    <nav class="section-nav" aria-label="페이지 둘러보기"><a href="#how-it-works">둘러보기</a>a><a href="#outputs">결과물</a>a><a href="#download">다운로드</a>a></nav>nav>
+  </header>header>
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="hero-kicker">WINDOWS 로컬 업무도구</p>p>
+        <h1 id="hero-title"><span>명단 하나에</span><br>출석부, 식비명단,<br>명찰까지.</h1>h1>
+        <p class="hero-description">명단 파일 하나를 불러와 출석부·식비명단 XLSX와 명찰 PDF를 만드세요. 파일 처리는 내 PC에서 이루어집니다.</p>p>
+        <div class="hero-actions"><a class="button primary" href="#download">WINDOWS 앱 다운로드</a>a><p class="release-meta"><strong>최신 버전 v1.3.4</strong><span>업데이트 2026.09.18</span></p>p></div>div>
+      </div>div>
+      <figure class="hero-demo"><div class="app-window"><div class="app-window-bar" aria-hidden="true"><i></i><i></i><i></i><span>출석부 도와줘</span></div>div><picture class="workflow-animation"><source media="(prefers-reduced-motion: reduce)" srcset="./assets/02-column-review.webp"><img class="workflow-gif" src="./assets/workflow.gif" width="640" height="430" fetchpriority="high" alt="명단 확인부터 문서 선택과 저장 전 확인까지 이어지는 실제 앱 동작"></picture>picture></div>div><figcaption>실제 앱 동작 화면</figcaption></figure>figure>
+    </section>section>
+    <div class="page-divider wrap" aria-hidden="true"></div>div>
+    <section class="value-section"><div class="wrap"><h2>반복 업무는 줄이고,<br>프로그램 준비에 집중하세요.</h2><div class="value-grid result-flow"><article><span class="value-icon" aria-hidden="true">INPUT</span><h3>명단 하나</h3>h3><small>이름·소속 열 확인</small></article><span class="flow-arrow" aria-hidden="true">→</span><article><span class="value-icon" aria-hidden="true">OUTPUT 01</span><h3>출석부 XLSX</h3></article><article><span class="value-icon" aria-hidden="true">OUTPUT 02</span><h3>식비명단 XLSX</h3></article><article><span class="value-icon" aria-hidden="true">OUTPUT 03</span><h3>명찰 PDF</h3></article></div>div></div>div></section>section>
+    <section class="section wrap" id="how-it-works" aria-labelledby="steps-title">
+      <div class="section-heading"><div><h2 id="steps-title">앱 미리보기</h2>h2></div></div>
+      <div class="walkthrough-meta"><p id="step-progress" aria-live="polite"><strong>1</strong> / 6 단계</p>p><div class="progress-track" aria-hidden="true"><span></span></div></div>
+      <div class="walkthrough">
+        <div class="step-list" role="tablist" aria-label="앱 사용 단계" aria-orientation="vertical">
+          <button id="tab-import" role="tab" aria-selected="true" aria-controls="panel-import"><span>01</span><span><strong>명단 불러오기</strong><small>파일을 선택하고 이름·소속 열 확인</small></span><b aria-hidden="true">↗</b>b></button>button>
+          <button id="tab-people" role="tab" aria-selected="false" aria-controls="panel-people" tabindex="-1"><span>02</span><span><strong>참가자 확인 및 선택</strong><small>이번 행사에 사용할 인원만 체크</small></span><b aria-hidden="true">↗</b>b></button>button>
+          <button id="tab-docs" role="tab" aria-selected="false" aria-controls="panel-docs" tabindex="-1"><span>03</span><span><strong>만들 문서 선택</strong><small>출석부 · 식비명단 · 명찰</small></span><b aria-hidden="true">↗</b>b></button>button>
+          <button id="tab-event" role="tab" aria-selected="false" aria-controls="panel-event" tabindex="-1"><span>04</span><span><strong>행사 정보 입력</strong><small>프로그램명 · 날짜 · 식비 확인자</small></span><b aria-hidden="true">↗</b>b></button>button>
+          <button id="tab-badge" role="tab" aria-selected="false" aria-controls="panel-badge" tabindex="-1"><span>05</span><span><strong>명찰 디자인</strong><small>배치와 색상을 보면서 편집</small></span><b aria-hidden="true">↗</b>b></button>button>
+          <button id="tab-save" role="tab" aria-selected="false" aria-controls="panel-save" tabindex="-1"><span>06</span><span><strong>확인하고 저장</strong><small>미리보기 후 Windows 앱에서 출력</small></span><b aria-hidden="true">↗</b>b></button>button>
+        </div>
+        <div class="step-panels">
+          <figure id="panel-import" role="tabpanel" aria-labelledby="tab-import" tabindex="0"><a href="./assets/02-column-review.webp" data-lightbox data-caption="명단 불러오기 · 이름과 소속 열, 포함할 행을 확인합니다."><img src="./assets/02-column-review.webp" width="1440" height="1640" loading="lazy" alt="가상 명단 CSV에서 이름과 소속 열을 확인하는 실제 앱 화면"></a>a><figcaption><span>01 / 06</span>이름·소속 열과 포함할 행을 직접 확인합니다.</figcaption><a class="small-link" href="./assets/01-import.webp" data-lightbox data-caption="명단 가져오기 시작 화면">파일 선택 시작 화면도 보기 ↗</a>a></figure>figure>
+          <figure id="panel-people" role="tabpanel" aria-labelledby="tab-people" tabindex="0" hidden><a href="./assets/03-participants.webp" data-lightbox data-caption="참가자 선택 · 가상 참가자 6명 중 5명을 선택한 화면"><img src="./assets/03-participants.webp" width="1440" height="1640" loading="lazy" alt="전체 6명의 가상 참가자 중 한소율을 제외한 5명을 선택한 화면"></a>a><figcaption><span>02 / 06</span>체크를 해제해도 원본 명단은 바뀌지 않습니다.</figcaption></figure>figure>
+          <figure id="panel-docs" role="tabpanel" aria-labelledby="tab-docs" tabindex="0" hidden><a href="./assets/04-documents.webp" data-lightbox data-caption="문서 선택 · 출석부와 식비명단은 XLSX, 명찰은 PDF"><img src="./assets/04-documents.webp" width="1440" height="1640" loading="lazy" alt="출석부, 식비명단, 명찰 세 가지 문서를 선택하는 실제 화면"></a>a><figcaption><span>03 / 06</span>필요한 문서만 골라 한 번에 준비합니다.</figcaption></figure>figure>
+          <figure id="panel-event" role="tabpanel" aria-labelledby="tab-event" tabindex="0" hidden><a href="./assets/05-event.webp" data-lightbox data-caption="행사 정보 · 2026 청소년 문화체험 / 2026. 10. 24. / 가상 확인자 정다온"><img src="./assets/05-event.webp" width="1440" height="1640" loading="lazy" alt="2026 청소년 문화체험 행사명과 날짜, 확인자 정다온을 입력한 화면"></a>a><figcaption><span>04 / 06</span>행사 정보를 입력하고 출석부·식비명단을 미리 봅니다.</figcaption></figure>figure>
+          <figure id="panel-badge" role="tabpanel" aria-labelledby="tab-badge" tabindex="0" hidden><a href="./assets/06-badge-editor.webp" data-lightbox data-caption="명찰 편집 · 실제 드래그 배치와 색상 설정 UI"><img src="./assets/06-badge-editor.webp" width="1600" height="1131" loading="lazy" alt="행사명, 소속, 이름의 배치와 명찰 배경색을 편집하는 화면"></a>a><figcaption><span>05 / 06</span>큰 작업 화면에서 명찰 디자인을 조정합니다.</figcaption></figure>figure>
+          <figure id="panel-save" role="tabpanel" aria-labelledby="tab-save" tabindex="0" hidden><a href="./assets/07-save-review.webp" data-lightbox data-caption="저장 전 확인 · 실제 파일 생성은 Windows 앱에서 지원합니다."><img src="./assets/07-save-review.webp" width="1440" height="1640" loading="lazy" alt="참가자 6명과 결과 파일 3개를 확인하고 저장 위치를 선택하는 단계"></a>a><figcaption><span>06 / 06</span>참가자·행사·파일 개수를 확인한 뒤 저장 위치를 고릅니다.</figcaption></figure>figure>
+        </div>
+      </div>
+      <div hidden class="step-controls" aria-label="미리보기 단계 이동"><button type="button" data-step="previous">← 이전 단계</button>button><button type="button" data-step="next">다음 단계 →</button>button></div>
+      <p class="section-note">가상의 한국 이름 6명 · 유그린청소년센터 · 2026 청소년 문화체험. 실제 개인정보를 사용하지 않았습니다.</p>p>
+      <noscript><p>JavaScript 없이도 다음 실제 화면을 열 수 있습니다: <a href="./assets/03-participants.webp">참가자 선택</a>a> · <a href="./assets/04-documents.webp">문서 선택</a>a> · <a href="./assets/05-event.webp">행사 정보</a>a> · <a href="./assets/06-badge-editor.webp">명찰 편집</a>a> · <a href="./assets/07-save-review.webp">저장 전 확인</a>a></p></noscript>
+    </section>section>
+    <section class="section output-section" id="outputs" aria-labelledby="outputs-title"><div class="wrap">
+      <div class="section-heading"><div><h2 id="outputs-title">하나의 명단, 세 가지 결과물.</h2>h2></div><p>출석 확인부터 식비 서명, 참가자 명찰까지.<br>각 문서에 맞는 파일로 만듭니다.</p></div>
+      <div class="output-grid">
+        <article class="output-card"><div class="output-card-heading"><h3>출석부</h3><span class="file-tag">XLSX</span></div><a class="output-image" href="./assets/08-attendance-preview.webp" data-lightbox data-caption="출석부 · 실제 앱의 XLSX 인쇄 미리보기"><img src="./assets/attendance-detail.webp" width="1000" height="556" loading="lazy" alt="실제 출석부 미리보기의 연번, 이름, 출석확인 칸"></a>a><p>연번·이름·출석확인 칸을 정리한<br>행사 출석 확인용 엑셀.</p><small>실제 앱 인쇄 미리보기</small></article>
+        <article class="output-card"><div class="output-card-heading"><h3>식비명단</h3><span class="file-tag">XLSX</span></div><a class="output-image" href="./assets/09-meal-preview.webp" data-lightbox data-caption="식비명단 · 실제 앱의 XLSX 인쇄 미리보기"><img src="./assets/meal-d</h3></h3></p></p></noscript></span></span></div></h3></h3></small></article></h2></figcaption></i></i></strong></span></body></title></head>
+
