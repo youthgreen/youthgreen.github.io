@@ -1,0 +1,76 @@
+name: Mirror verified Attendance release
+
+on:
+  push:
+    branches: [main]
+    paths: [.github/release-mirror.json]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate release manifest
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          data = json.loads(Path('.github/release-mirror.json').read_text())
+          assert re.fullmatch(r'v\d+\.\d+\.\d+', data['tag'])
+          assert tuple(map(int, data['tag'][1:].split('.'))) >= (1, 4, 0), 'Older releases must remain unchanged'
+          assert re.fullmatch(r'[0-9a-f]{40}', data['source_commit'])
+          assert re.fullmatch(r'[0-9a-f]{64}', data['sha256'])
+          with open(os.environ['GITHUB_ENV'], 'a') as out:
+              for key, value in data.items():
+                  out.write(f'MIRROR_{key.upper()}={value}\n')
+          PY
+      - name: Load and verify the Windows ZIP
+        run: |
+          set -euo pipefail
+          zip="Attendance-Helper-${MIRROR_TAG}-Windows-x64.zip"
+          if [ -f ".github/release-assets/$zip" ]; then
+            cp ".github/release-assets/$zip" "$zip"
+          else
+            # The temporary transfer file is removed after publication. A retry
+            # then uses the already public site asset, never private app sources.
+            curl --fail --location --silent --show-error "https://github.com/${GITHUB_REPOSITORY}/releases/download/${MIRROR_TAG}/${zip}" --output "$zip"
+          fi
+          printf '%s  %s\n' "$MIRROR_SHA256" "$zip" | sha256sum --check
+          python3 - <<'PY'
+          import hashlib, json, os, zipfile
+          filename = f"Attendance-Helper-{os.environ['MIRROR_TAG']}-Windows-x64.zip"
+          with zipfile.ZipFile(filename) as archive:
+              assert archive.testzip() is None
+              info = json.loads(archive.read('release-info.json').decode('utf-8-sig'))
+              assert info['version'] == os.environ['MIRROR_TAG'][1:]
+              assert info['commit'] == os.environ['MIRROR_SOURCE_COMMIT']
+              assert info['appProductVersion'].split('.')[:3] == info['version'].split('.')
+              installer = archive.read(info['installer'])
+              assert installer[:2] == b'MZ'
+              assert hashlib.sha256(installer).hexdigest() == info['installerSha256'].lower()
+          PY
+      - name: Upload without replacing existing assets and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # The matching new tag must exist. Never use --clobber.
+          zip="Attendance-Helper-${MIRROR_TAG}-Windows-x64.zip"
+          if gh release view "$MIRROR_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            names=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$MIRROR_TAG" --jq '.assets[].name')
+            if printf '%s\n' "$names" | grep -Fxq "$zip"; then
+              curl --fail --location --silent --show-error "https://github.com/${GITHUB_REPOSITORY}/releases/download/${MIRROR_TAG}/${zip}" --output existing.zip
+              printf '%s  existing.zip\n' "$MIRROR_SHA256" | sha256sum --check
+            else
+              gh release upload "$MIRROR_TAG" "$zip" --repo "$GITHUB_REPOSITORY"
+            fi
+            gh release edit "$MIRROR_TAG" --draft=false --latest --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$MIRROR_TAG" "$zip" --repo "$GITHUB_REPOSITORY" --verify-tag --title "출석부 도와줘 V${MIRROR_TAG#v}" --notes-file .github/release-notes.md --latest
+          fi
