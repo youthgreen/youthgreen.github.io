@@ -4,16 +4,16 @@
 
 ## 저장소와 버전
 
-- 현재 앱: **v1.4.1**, React + Tauri 2 + Rust 기반 Windows x64 앱.
+- 현재 앱: **v1.4.2**, React + Tauri 2 + Rust 기반 Windows x64 앱.
 - 실제 앱 소스: `youthgreen/Attendance` (**비공개**), 기본 브랜치 `main`. 저장소 소유자/허가된 계정으로 접근합니다.
-- 앱 v1.4.1 소스 커밋: `c435f6405deb537372bb62adb96841f01f23ef3e` (태그 `v1.4.1`).
-- 앱 수정 작업 기준: `a1adb4a2fa25a86457437c1771aa32f6562fce34` (v1.4.0).
+- 앱 v1.4.2 소스 커밋: `5a7bd30b11bbe56e5ce1344c01d719b169ae73cc` (태그 `v1.4.2`).
+- 앱 수정 작업 기준: `c435f6405deb537372bb62adb96841f01f23ef3e` (v1.4.1).
 - 사이트: `youthgreen/youthgreen.github.io`, `attendance-helper/index.html`.
-- 사이트 작업 기준: `788721e7440121b6ce7471ef0b3548b17398833b`.
+- 사이트 작업 기준: `baf13cd6f7dc4c30129b7a71e16992819e3edf13`.
 - 공개 Windows 다운로드 파일 보관 위치: **사이트 저장소의 GitHub Releases**.
-- 현재 파일: `Attendance-Helper-v1.4.1-Windows-x64.zip`.
-- 직접 다운로드 URL: https://github.com/youthgreen/youthgreen.github.io/releases/download/v1.4.1/Attendance-Helper-v1.4.1-Windows-x64.zip
-- 기존 v1.3.3/v1.3.4/v1.4.0 태그·릴리스·파일은 보존합니다.
+- 현재 파일: `Attendance-Helper-v1.4.2-Windows-x64.zip`.
+- 직접 다운로드 URL: https://github.com/youthgreen/youthgreen.github.io/releases/download/v1.4.2/Attendance-Helper-v1.4.2-Windows-x64.zip
+- 기존 v1.3.3/v1.3.4/v1.4.0/v1.4.1 태그·릴리스·파일은 보존합니다.
 
 `seoeum1711-jpg/Attendance`, 앱 v1.3.2, 예전 asset 이름을 참조하던 운영 정보는 더 이상 현재 기준이 아닙니다.
 
@@ -50,6 +50,14 @@ python3 -m http.server 8000 --bind 127.0.0.1
 이를 해결하기 위한 사이트 워크플로는 `.github/workflows/mirror-attendance.yml`입니다. `.github/release-mirror.json`의 tag/source_commit/sha256과 `.github/release-notes.md`를 실제 새 빌드 정보로 갱신합니다. 검증된 ZIP을 임시로 `.github/release-assets/`에 넣어 함께 commit/push하면 사이트 Actions가 자체 임시 `GITHUB_TOKEN`으로 게시합니다. 비공개 소스나 인증정보를 배포하지 않습니다. 기존 asset은 덮어쓰지 않고 동일 체크섬일 때만 재사용합니다. 공개 업로드가 확인되면 임시 ZIP을 현재 브랜치에서 제거하고 홈페이지 변경과 함께 commit합니다. 기존 커밋·태그는 다시 쓰지 않습니다.
 
 v1.4.0 중계 커밋은 `e0d02ff9e5c025bdf34c5d38399adcdf5382f921`입니다. 임시 ZIP이 제거된 이후 재실행은 이미 공개된 사이트 asset을 받아 체크섬을 검증합니다. 미래 버전에는 새 ZIP을 다시 준비해야 합니다.
+
+## 소속 표시 일괄 편집
+
+명찰의 소속을 더블클릭해 Enter로 줄바꿈을 넣고 ‘같은 소속 N명에 적용’ 또는 ‘이 참가자만 적용’을 선택합니다. 앞면 텍스트 설정의 ‘소속별 일괄 편집’은 인원수, 검색, 여러 소속의 동시 적용과 원래 표시 복원을 제공합니다. 오류가 있으면 부분 적용하지 않습니다.
+
+그룹은 원래 소속을 NFC 정규화하고 연속 공백·줄바꿈을 한 칸으로 합친 기준입니다. 기관이 같아도 동아리명이 다르면 구분하고 빈 소속은 제외합니다. 현재 선택 인원에게만 적용하며 나중에 추가한 사람에게 자동 전파하지 않습니다. 개인별 예외는 이후 명시적인 일괄 적용으로 대체됩니다.
+
+기존 참가자별 명찰 표시를 재사용하고 이름·디자인을 보존합니다. 복원은 소속 표시와 소속의 예전 줄바꿈만 지웁니다. 명단 원본·보관 명단·두 XLSX에는 반영하지 않으며, 참가자별 문구는 템플릿·설정·로그에 저장하지 않습니다. 각 창의 취소와 명찰 편집기 전체 취소 범위를 구분합니다.
 
 ## 명찰 규격과 접이식 출력
 
@@ -104,3 +112,16 @@ PNG/JPG/JPEG/WebP 이미지 한 장을 모든 참가자의 뒷면으로 사용�
 - 임시 중계 커밋: dc451af1ab6b1d42eefca6aded52ddd432dfad84. 이후 홈페이지 반영 시 임시 ZIP을 제거했습니다.
 - 공개 Release ZIP을 내려받아 검증한 Windows 빌드 ZIP과 일치함을 확인했습니다.
 - ZIP SHA-256: `f35a6ae8d99489056b78b6c0fd473190d7536c808e6804b4331ee73c74b74d13` (4,779,074바이트).
+
+## v1.4.2 배포 검증 기록
+
+- 앱 소스: `5a7bd30b11bbe56e5ce1344c01d719b169ae73cc`. v1.4.1을 기준으로 소속 표시 일괄 편집을 추가했습니다.
+- Windows 프런트엔드 68개, Rust 21개 테스트 통과. 실패·건너뜀은 0개입니다.
+- Windows CI: https://github.com/youthgreen/Attendance/actions/runs/40494325532.
+- Windows NSIS 빌드 및 앱/설치 EXE 버전 1.4.2 확인: https://github.com/youthgreen/Attendance/actions/runs/40494342869.
+- 공개 ZIP 게시: https://github.com/youthgreen/youthgreen.github.io/actions/runs/40496773713.
+- 임시 중계 커밋: `5a64da44da9121b6aa99c80f4de38849f1370ba6`. 공개 ZIP 검증 후 홈페이지 변경과 함께 임시 ZIP을 제거했습니다.
+- 실제 화면에서 가상 참가자 150명/소속 5개(32·24·30·34·30명)의 편집, 개별 예외 대체, 오류 시 미적용, 템플릿 제외와 새 명단 초기화를 확인했습니다. 실제 Rust PDF의 75쪽을 PDF.js로 모두 표시하고 전원 문구·줄바꿈 및 XLSX/PDF 파일 생성을 확인했습니다.
+- Rust는 앞면만/접이식 × 세로/가로 네 조합에서 150명 전체의 PDF 글리프와 두 줄 좌표, 두 XLSX XML의 기존 출력 일치, 템플릿의 참가자별 문구 제거를 검사합니다. v1.4.1의 실제 규격·구형 템플릿 테스트도 유지했습니다.
+- 공개 Release ZIP을 직접 내려받아 검증한 Windows 빌드 ZIP과 SHA-256 일치를 확인했습니다.
+- ZIP SHA-256: `3c336f9bb28f77027d6e0a813d164787616e6aa2aa441b44cc5575bcef68339e` (4,784,265바이트).
