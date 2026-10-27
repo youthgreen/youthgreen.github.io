@@ -4,16 +4,16 @@
 
 ## 저장소와 버전
 
-- 현재 앱: **v1.4.0**, React + Tauri 2 + Rust 기반 Windows x64 앱.
+- 현재 앱: **v1.4.1**, React + Tauri 2 + Rust 기반 Windows x64 앱.
 - 실제 앱 소스: `youthgreen/Attendance` (**비공개**), 기본 브랜치 `main`. 저장소 소유자/허가된 계정으로 접근합니다.
-- 앱 v1.4.0 소스 커밋: `a1adb4a2fa25a86457437c1771aa32f6562fce34` (태그 `v1.4.0`).
-- 앱 기능 작업 기준: `ff36ca2f7456600b0fe37a233105214cb9d3303f` (v1.3.4).
+- 앱 v1.4.1 소스 커밋: `c435f6405deb537372bb62adb96841f01f23ef3e` (태그 `v1.4.1`).
+- 앱 수정 작업 기준: `a1adb4a2fa25a86457437c1771aa32f6562fce34` (v1.4.0).
 - 사이트: `youthgreen/youthgreen.github.io`, `attendance-helper/index.html`.
-- 사이트 작업 기준: `08b327cfb87531c55ae778041aee44c36c408612`.
+- 사이트 작업 기준: `788721e7440121b6ce7471ef0b3548b17398833b`.
 - 공개 Windows 다운로드 파일 보관 위치: **사이트 저장소의 GitHub Releases**.
-- 현재 파일: `Attendance-Helper-v1.4.0-Windows-x64.zip`.
-- 직접 다운로드 URL: https://github.com/youthgreen/youthgreen.github.io/releases/download/v1.4.0/Attendance-Helper-v1.4.0-Windows-x64.zip
-- 기존 v1.3.3/v1.3.4 태그·릴리스·파일은 보존합니다.
+- 현재 파일: `Attendance-Helper-v1.4.1-Windows-x64.zip`.
+- 직접 다운로드 URL: https://github.com/youthgreen/youthgreen.github.io/releases/download/v1.4.1/Attendance-Helper-v1.4.1-Windows-x64.zip
+- 기존 v1.3.3/v1.3.4/v1.4.0 태그·릴리스·파일은 보존합니다.
 
 `seoeum1711-jpg/Attendance`, 앱 v1.3.2, 예전 asset 이름을 참조하던 운영 정보는 더 이상 현재 기준이 아닙니다.
 
@@ -51,9 +51,13 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 v1.4.0 중계 커밋은 `e0d02ff9e5c025bdf34c5d38399adcdf5382f921`입니다. 임시 ZIP이 제거된 이후 재실행은 이미 공개된 사이트 asset을 받아 체크섬을 검증합니다. 미래 버전에는 새 ZIP을 다시 준비해야 합니다.
 
-## v1.4.0 접이식 명찰
+## 명찰 규격과 접이식 출력
 
-앞면만은 기존 규격과 배치가 유지됩니다. 가로형 90×60mm는 A4당 8명, 세로형 93×124mm는 4명입니다. 접이식은 한 사람의 `[앞면 | 공통 뒷면]`을 나란히 배치하고 **최대 2명/페이지**로 제한합니다. 명찰 크기는 줄이지 않습니다.
+새 작업과 규격 버튼의 한 면은 세로 **93×124mm**, 가로 **124×93mm**입니다. 접이식 펼침은 각각 **186×124mm**, **248×93mm**로 한 면의 폭에서 파생됩니다. 세로형 접이식은 A4 세로(210×297mm), 가로형 접이식은 A4 가로(297×210mm)에 **최대 2명/페이지**를 배치합니다. 명찰을 페이지에 맞춰 축소하지 않습니다.
+
+기존 90×60mm 템플릿은 원래 크기와 좌표로 열립니다. 가로형/세로형 규격 버튼을 직접 눌렀을 때만 새 표준을 적용합니다. 앞면만의 A4 배치 계산은 기존 방식이며, 기존 90×60mm는 8명/페이지, 93×124mm는 4명/페이지, 새 124×93mm는 2명/페이지입니다.
+
+`src/badge-sizes.json`을 앱 TypeScript와 Rust가 같이 읽습니다. 편집기는 이미지가 없어도 두 면 전체를 같은 비율로 표시합니다. 편집 면 버튼은 대상을 선택하고 캔버스를 교체하지 않습니다. 접는 선은 한 면의 실제 폭에서 계산합니다. 앞면 디자인/뒷면 디자인에서 배경색·배경 이미지·맞춤을 대칭적으로 편집합니다. 이미지와 PDF는 면의 경계에서 clipping하며, 편집기의 면 이름·규격·강조 표시는 PDF 콘텐츠가 아닙니다.
 
 PNG/JPG/JPEG/WebP 이미지 한 장을 모든 참가자의 뒷면으로 사용합니다. 영역 채우기(기본)와 전체 이미지 맞춤을 지원합니다. 전체 외곽은 재단선, 가운데 옅은 점선은 접는 선입니다. 한 면에 100% 실제 크기로 출력하고 뒤로 접습니다. 프린터 duplex 양면 인쇄 기능이 아닙니다. 템플릿에 뒷면 설정이 없으면 앞면만으로 열립니다.
 
@@ -81,3 +85,22 @@ PNG/JPG/JPEG/WebP 이미지 한 장을 모든 참가자의 뒷면으로 사용�
 - 사이트 공개 ZIP을 실제 다운로드해 검증한 빌드 ZIP과 SHA-256 일치를 확인했습니다.
 - ZIP SHA-256: `aa7824c1efeb8d3253c88fd1307fbc9428330b212cc1a67b9a0778c4c6ff4247` (4,772,196바이트).
 - 앱 UI에서 Rust 생성기와 PDF.js를 연결해 5명/3쪽의 실제 PDF 렌더링을 확인했습니다. 기존 앞면 생성기의 출력 명령도 가로/세로 규격에서 v1.3.4와 일치했습니다.
+
+## v1.4.1 검증 방식
+
+- 93×124 / 124×93mm 앞면과 186×124 / 248×93mm 펼침의 실제 PDF 좌표를 ±0.2mm 이하로 확인합니다.
+- MediaBox의 A4 세로/가로 크기, 두 면의 clipping 사각형, 재단 외곽, 접는 x 위치를 실제 출력 명령에서 읽습니다.
+- 브라우저에서 앞/뒤 면의 같은 픽셀 크기, 틈 없는 접합과 접는 선 중심, 세로→가로→세로 전환, 빈 뒷면, 창 크기에 따른 단일 배율을 확인합니다.
+- 정사각형/가로/세로 이미지와 4000×3000 이미지가 물리 규격을 변경하지 않는지 확인합니다.
+- 사용자 확인에 따라 구형 90×60mm 템플릿은 변환하지 않습니다.
+
+## v1.4.1 배포 검증 기록
+
+- 앱 소스: c435f6405deb537372bb62adb96841f01f23ef3e. 기존 템플릿의 90×60mm 유지 정책을 사용자에게 확인했습니다.
+- Windows 프런트엔드 48개 테스트, Rust 18개 테스트가 통과했습니다. 실패/건너뜀은 0개입니다.
+- Windows CI: https://github.com/youthgreen/Attendance/actions/runs/40482316282.
+- Windows NSIS 빌드 및 앱/설치 EXE 버전 1.4.1 확인: https://github.com/youthgreen/Attendance/actions/runs/40482319773.
+- 공개 ZIP 게시: https://github.com/youthgreen/youthgreen.github.io/actions/runs/40484733539.
+- 임시 중계 커밋: dc451af1ab6b1d42eefca6aded52ddd432dfad84. 이후 홈페이지 반영 시 임시 ZIP을 제거했습니다.
+- 공개 Release ZIP을 내려받아 검증한 Windows 빌드 ZIP과 일치함을 확인했습니다.
+- ZIP SHA-256: `f35a6ae8d99489056b78b6c0fd473190d7536c808e6804b4331ee73c74b74d13` (4,779,074바이트).
