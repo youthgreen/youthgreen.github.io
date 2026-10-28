@@ -94,5 +94,78 @@
       "height": 760
     },
     "source": "09-meal-preview.png"
+  },
+  {
+    "file": "new-festival-spread.webp",
+    "width": 1860,
+    "height": 1240,
+    "bytes": 104404,
+    "source": "Actual v1.4.5 production Rust PDF generator rendered with PyMuPDF; fictional roster and original sample artwork",
+    "appCommit": "8f91e974751e6f3d05d19aab33523d5a3c2cc893",
+    "cropMm": [
+      12.0,
+      24.5,
+      186,
+      124
+    ],
+    "participantNames": "김하루, 이새봄, 박다온, 정해솔, 한여울, 최나래",
+    "kind": "pdf-render"
+  },
+  {
+    "file": "new-festival-sheet.webp",
+    "width": 1072,
+    "height": 1516,
+    "bytes": 93932,
+    "source": "Actual v1.4.5 production Rust PDF generator rendered with PyMuPDF; fictional roster and original sample artwork",
+    "appCommit": "8f91e974751e6f3d05d19aab33523d5a3c2cc893",
+    "cropMm": null,
+    "participantNames": "김하루, 이새봄, 박다온, 정해솔, 한여울, 최나래",
+    "kind": "pdf-render"
+  },
+  {
+    "file": "new-festival-editor.webp",
+    "width": 1600,
+    "height": 1060,
+    "bytes": 91340,
+    "source": "Actual v1.4.5 React UI in Chromium with synthetic roster/template/image IPC fixtures; PDF generation uses production Rust source; no UI/content compositing",
+    "appCommit": "8f91e974751e6f3d05d19aab33523d5a3c2cc893",
+    "kind": "app-screenshot",
+    "crop": null
+  },
+  {
+    "file": "new-festival-batch.webp",
+    "width": 1600,
+    "height": 1060,
+    "bytes": 36696,
+    "source": "Actual v1.4.5 React UI in Chromium with synthetic roster/template/image IPC fixtures; PDF generation uses production Rust source; no UI/content compositing",
+    "appCommit": "8f91e974751e6f3d05d19aab33523d5a3c2cc893",
+    "kind": "app-screenshot",
+    "crop": null
+  },
+  {
+    "file": "new-camp-spread.webp",
+    "width": 2480,
+    "height": 930,
+    "bytes": 78544,
+    "source": "Actual v1.4.5 production Rust PDF generator rendered with PyMuPDF; fictional roster and original sample artwork",
+    "appCommit": "8f91e974751e6f3d05d19aab33523d5a3c2cc893",
+    "cropMm": [
+      24.5,
+      12.0,
+      248,
+      93
+    ],
+    "participantNames": "김하루, 이새봄, 박다온, 정해솔, 한여울, 최나래",
+    "kind": "pdf-render"
+  },
+  {
+    "file": "new-camp-editor.webp",
+    "width": 1600,
+    "height": 1060,
+    "bytes": 71678,
+    "source": "Actual v1.4.5 React UI in Chromium with synthetic roster/template/image IPC fixtures; PDF generation uses production Rust source; no UI/content compositing",
+    "appCommit": "8f91e974751e6f3d05d19aab33523d5a3c2cc893",
+    "kind": "app-screenshot",
+    "crop": null
   }
 ]
